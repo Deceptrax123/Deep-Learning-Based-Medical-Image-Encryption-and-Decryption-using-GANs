@@ -20,12 +20,11 @@ class ChestXrayDataset(torch.utils.data.Dataset):
         load_dotenv('.env')
         data_path = os.getenv("data")
 
-        sample = Image.open(os.path.join(data_path, str(id), ".jpeg"))
+        sample = Image.open(os.path.join(data_path, "image"+str(id)+".jpeg"))
         transform_method = T.Compose([
             T.Resize(size=(256, 256)), T.RandomRotation(
                 degrees=(-20, +20)), T.TrivialAugmentWide(num_magnitude_bins=31),
-            T.ToTensor(), T.Normalize(
-                [0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+            T.ToTensor()
         ])
 
         sample_tensor = transform_method(sample)

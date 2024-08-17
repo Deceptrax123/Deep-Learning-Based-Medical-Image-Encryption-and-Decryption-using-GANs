@@ -29,9 +29,9 @@ class Generator(Module):
 
         # Decoder
         self.dec1 = ConvolutionBlock(
-            num_features*4, num_features*2, is_downsampling=False, kernel_size=3, stride=1, output_padding=1)
+            num_features*4, num_features*2, is_downsampling=False, kernel_size=3, stride=2, padding=1, output_padding=1)
         self.dec2 = ConvolutionBlock(
-            num_features*2, num_features, is_downsampling=False, kernel_size=3, stride=2, output_padding=1)
+            num_features*2, num_features, is_downsampling=False, kernel_size=3, stride=2, padding=1, output_padding=1)
 
         self.final_layer = Conv2d(
             num_features, img_channels, kernel_size=7, stride=1, padding=3, padding_mode='reflect')

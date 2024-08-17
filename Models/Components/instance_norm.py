@@ -4,7 +4,8 @@ from torch import nn
 
 class ConvInstanceNormLeakyReLUBlock(nn.Module):
     def __init__(self, in_channels: int, out_channels: int, stride: int):
-        super().__init__()
+        super(ConvInstanceNormLeakyReLUBlock, self).__init__()
+
         self.conv = nn.Sequential(
             nn.Conv2d(
                 in_channels,

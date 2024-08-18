@@ -214,6 +214,7 @@ ehthumbs.db
 ehthumbs_vista.db
 
 wandb
+weights
 
 # Dump file
 *.stackdump

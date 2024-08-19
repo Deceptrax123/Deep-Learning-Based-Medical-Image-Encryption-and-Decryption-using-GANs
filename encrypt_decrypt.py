@@ -56,7 +56,7 @@ if __name__ == '__main__':
     decrypted = cv2.imread("./Test_Outputs/Decrypted/output.png")
 
     # Post process
-    decrypted -= 255
+    decrypted = 255-decrypted
 
     fig = plt.figure(figsize=(10, 10), dpi=72)
     ax1 = fig.add_subplot(1, 3, 1)

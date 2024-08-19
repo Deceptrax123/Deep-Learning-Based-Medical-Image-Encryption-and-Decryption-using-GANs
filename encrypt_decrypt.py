@@ -15,24 +15,27 @@ if __name__ == '__main__':
     encrypt = Encryption(img_channels=1)
     decrypt = Decryption(img_channels=1, num_residuals=3)
 
-    decrypt.eval()
     encrypt.eval()
+    decrypt.eval()
 
-    generate.load_state_dict(torch.load("Weights/enc_gen/5.pth"), strict=True)
-    encrypt.load_state_dict(torch.load("Weights/enc_gen/5.pth"), strict=False)
-    decrypt.load_state_dict(torch.load("Weights/enc_gen/5.pth"), strict=False)
+    generate.load_state_dict(torch.load(
+        "Weights/dec_gen/5.pth", weights_only=True), strict=True)
+    encrypt.load_state_dict(torch.load(
+        "Weights/dec_gen/5.pth", weights_only=True), strict=False)
+    decrypt.load_state_dict(torch.load(
+        "Weights/dec_gen/5.pth", weights_only=True), strict=False)
 
     # Choose a random image to encrypt
     ids = list(range(1, 1342))
     sampled_id = random.choice(ids)
 
-    img = ChestXrayDataset(ids).__getitem__(999)
+    img = ChestXrayDataset(ids).__getitem__(sampled_id)
 
     # Encrypt and Decrypt
     img_enc = encrypt(img)
     img_dec = decrypt(img_enc)
     # Test the cyclic generation of the algorithm
-    plain_img = generate(img_dec)
+    plain_img = generate(img)
 
     # Visualise using T-SNE
     latent_img = img_enc.detach().numpy()
@@ -44,13 +47,16 @@ if __name__ == '__main__':
     latent_img_vis = np.round((latent_img_vis+1)*255)//2
 
     # Save Original Image and Decrypted Image
-    save_image(img_dec*0.5+0.5, "Test_Outputs/Decrypted/output.png")
-    save_image(plain_img*0.5+0.5, "Test_Outputs/Plain/output.png")
+    save_image(img_dec, "Test_Outputs/Decrypted/output.png")
+    save_image(plain_img, "Test_Outputs/Plain/output.png")
     save_image(img, "Test_Outputs/Original_Plain/input.png")
 
     # Display Outputs on window
-    plain = cv2.imread("./Test_Outputs/Plain/output.png")
+    plain = cv2.imread("./Test_Outputs/Original_Plain/input.png")
     decrypted = cv2.imread("./Test_Outputs/Decrypted/output.png")
+
+    # Post process
+    decrypted -= 255
 
     fig = plt.figure(figsize=(10, 10), dpi=72)
     ax1 = fig.add_subplot(1, 3, 1)
